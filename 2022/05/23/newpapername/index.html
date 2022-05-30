@@ -6,21 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>博客页 | Hexo</title>
+  <title>博客页 | Parasol的笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="——————原文———————— 搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得做XSS，评论区也不做了（好耶）。 博客页就丢一些搭建的过程。用的nodejs和git，直接用的hexo框架，自己从头开始搭的话端口调用太麻烦了，风格还要自己做，做的还丑，我觉得不大行，干脆直接拿来主义。 挂在github下做个">
+  <meta name="description" content="——————————————正文———————————————— 搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得留意XSS了，评论区干脆不做了（好耶）。 博客页就丢一些搭建的过程。用的nodejs和git，直接用的hexo框架，自己从头开始搭的话端口调用太麻烦了，风格还要自己做，做的还丑，我觉得不大行，干脆">
 <meta property="og:type" content="article">
 <meta property="og:title" content="博客页">
 <meta property="og:url" content="http://example.com/2022/05/23/newpapername/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="——————原文———————— 搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得做XSS，评论区也不做了（好耶）。 博客页就丢一些搭建的过程。用的nodejs和git，直接用的hexo框架，自己从头开始搭的话端口调用太麻烦了，风格还要自己做，做的还丑，我觉得不大行，干脆直接拿来主义。 挂在github下做个">
+<meta property="og:site_name" content="Parasol的笔记">
+<meta property="og:description" content="——————————————正文———————————————— 搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得留意XSS了，评论区干脆不做了（好耶）。 博客页就丢一些搭建的过程。用的nodejs和git，直接用的hexo框架，自己从头开始搭的话端口调用太麻烦了，风格还要自己做，做的还丑，我觉得不大行，干脆">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-23T06:51:18.000Z">
-<meta property="article:modified_time" content="2022-05-23T07:27:43.285Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2022-05-25T10:37:38.116Z">
+<meta property="article:author" content="Parasol">
+<meta property="article:tag" content="前端，js，渗透测试，工具介绍，无线安全，web安全，挖洞人，找洞人">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Parasol的笔记" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -174,8 +175,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>——————原文————————</p>
-<p>搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得做XSS，评论区也不做了（好耶）。</p>
+        <p>——————————————正文————————————————</p>
+<p>搭个博客，把之前的笔记整理一下，也顺便做一个系统的复习，以后忘了还可以回来翻翻。懒得弄域名了就挂在Github下了。主要拿来记笔记就也懒得留意XSS了，评论区干脆不做了（好耶）。</p>
 <p>博客页就丢一些搭建的过程。用的nodejs和git，直接用的hexo框架，自己从头开始搭的话端口调用太麻烦了，风格还要自己做，做的还丑，我觉得不大行，干脆直接拿来主义。</p>
 <p>挂在github下做个SSH，偷懒不想每次输账号密码。</p>
 <p>注意是github现在不给直接账号密码进了，去setting里生成一下person token。</p>
@@ -229,6 +230,17 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/杂项//" class="article-tag-list-link color3">杂项</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -292,6 +304,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2022/05/23/a/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          V2ray，ss和ssr
+        
+      </div>
+    </a>
+  
   
     <a href="/2022/05/22/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Hello World</div>
@@ -337,7 +358,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2022 John Doe
+    		&copy; 2022 Parasol
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -418,6 +439,54 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">技术</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">小工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">pikachu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Burpsuite</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">爬虫，51JOB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MSF</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IP池，爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">无监督，聚类算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">京东，爬虫</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
