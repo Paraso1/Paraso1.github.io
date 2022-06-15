@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: 技术 | Parasol的笔记</title>
+  <title>WAF | Parasol的笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="小笔记，每月产出，努力提升，磨练技术，守法公民">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Parasol的笔记">
-<meta property="og:url" content="http://example.com/tags/%E6%8A%80%E6%9C%AF/index.html">
+  <meta name="description" content="Web Application Firewall，web应用防火墙，主要功能是对来自web应用程序客户端的各类请求进行内容检测和验证，确保其安全性和合法性。叫Application的原因很明显，应用层嘛，主要针对常见的XSS,SQL注入，CSRF以及爬虫进行相关的检测和防范。   原理:通过特征提取和分块检索进行特征匹配，将漏洞特征与设备自身的特征库进行匹配比对，一旦命中，直接阻断，这种方法能够有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WAF">
+<meta property="og:url" content="http://example.com/2022/06/05/WAF/index.html">
 <meta property="og:site_name" content="Parasol的笔记">
-<meta property="og:description" content="小笔记，每月产出，努力提升，磨练技术，守法公民">
+<meta property="og:description" content="Web Application Firewall，web应用防火墙，主要功能是对来自web应用程序客户端的各类请求进行内容检测和验证，确保其安全性和合法性。叫Application的原因很明显，应用层嘛，主要针对常见的XSS,SQL注入，CSRF以及爬虫进行相关的检测和防范。   原理:通过特征提取和分块检索进行特征匹配，将漏洞特征与设备自身的特征库进行匹配比对，一旦命中，直接阻断，这种方法能够有">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-06-04T16:02:27.000Z">
+<meta property="article:modified_time" content="2022-06-15T15:00:02.720Z">
 <meta property="article:author" content="Parasol">
-<meta property="article:tag" content="前端，js，渗透测试，工具介绍，无线安全，web安全，挖洞人，找洞人">
+<meta property="article:tag" content="WAF绕过">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Parasol的笔记" type="application/atom+xml">
@@ -153,79 +155,188 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-WAF" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/a/" class="archive-article-date">
-  	<time datetime="2022-05-23T11:57:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/a/">V2ray，ss和ssr</a>
+    <h1 class="article-title" itemprop="name">
+      WAF
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2022/06/05/WAF/" class="archive-article-date">
+  	<time datetime="2022-06-04T16:02:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Web Application Firewall，web应用防火墙，主要功能是对来自web应用程序客户端的各类请求进行内容检测和验证，确保其安全性和合法性。<br>叫Application的原因很明显，应用层嘛，主要针对常见的XSS,SQL注入，CSRF以及爬虫进行相关的检测和防范。  </p>
+<p>原理:通过特征提取和分块检索进行特征匹配，将漏洞特征与设备自身的特征库进行匹配比对，一旦命中，直接阻断，这种方法能够有效防范已知的安全问题，但是需要一个强大的特征库支持，特征库需要保证定期更新及维护。<br>以下就绕过思路进行学习，主要学习材料来源于二向箔安全，以及总结于各类博客。<br>目前主流的WAF绕过主要的突破点在于：Web容器的特性，Web应用层的问题，WAF自身的问题以及数据库的部分特性。<br>——Web容器的特性<br>一、对使用IIS+ASP的环境，对URL请求中的%处理时，如果后面的字符构成的字符串在URL编码表之外，ASP脚本处理时会将其忽略。 熟悉注入的应该能意识到，这就意味着在waf层获取的参数不足以和特征库匹配，但是却会被忽略%后构成SQL注入。  </p>
+<p>二、IIS支持Unicoe编码字符解析，但是有些WAF却不具备。意味着例如在WAF层的%u0053elect的输入会在IIS的后端识别后会自动编码，最终识别输入内容为Select。  </p>
+<p>三、由于Http协议中允许同样名称参数出现多次，例如&#x2F;?id&#x3D;12345%id&#x3D;67890，部分WAF会对其分开检测或是单独检测一者，其识别逻辑为输入id&#x3D;12345和id&#x3D;67890。但是在IIS+ASP&#x2F;ASP.NET来说，它最终识别的结果为12345,67890。意味着构造的输入为id&#x3D;union select password&#x2F;&amp;&#x2F;id&#x3D;from users其最终在后端识别为union select password &#x2F;,&#x2F; frome users。  </p>
+<p>四、当web浏览器的兼容方式与WAF不一致时，部分web浏览器出于兼容的目的，会对非RFC2616标准的请求包做兼容处理。如缺乏http协议字段或者缺少host字段，并且不添加请求类型。部分WAF处理数据的时候要和按照GET,POST等方式获取数据，或者通过正则来处理数据库包，此时WAF不会对请求包中的攻击字段做处理但是在后端被执行。  </p>
+<p>——Web应用层的问题<br>一、多重编码问题，由于web应用程序和WAF的解码能力存在不一致，WAF因为解码层数少于Web应用导致防御机制被绕过。例如在WAF经过多次解码后最终结果为123%25,而Web应用程序还能继续解码，使得最终的结果为123&amp;。  </p>
+<p>二、多数据来源，或者说是多数据输入点设定，如ASP的Request对象对于请求包的解析不是特别严谨，Web程序可以分别从GET请求中，POST请求中以及Cookie中寻找存在的参数值，最终在结果拼接所有的输入值。而对于某些WAF中，仅仅检查GET或POST请求，对三种方式组合的参数输入往往会被绕过。  </p>
+<p>——WAF自身问题<br>一、白名单的设置，例如指定的IP或IP段，来源于搜索引擎爬虫之类的请求WAF不会进行处理，此方面可以进行请求头的特征伪造处理。  </p>
+<p>二、数据获取方式存在缺陷，例如Get请求不被通过但是POST能够成功通过，也可能是WAF仅对某一种content-type设定了检测规则，换一种即可。或者干脆是WAF本身从数据包中提取检测特征值的方式存在缺陷，攻击数据由于干扰字符而无法被提取，以往的WAF可直接使用%0a,%0b,%0c等直接绕过，现在当然不行。  </p>
+<p>三、数据处理不当，此指WAF对获取数据存储和处理不当，对%00解码后会将后面的的数据忽略，不进行检测(%00会被WAF理解为参数读取已经结束了)，实现WAF绕过。或者是&amp;字符，由于某些WAF在对HTTP请求数据包中的参数进行检测时，会对输入的被&amp;分割的数据分开处理，而总体的输入可能时&amp;被写在&#x2F;&#x2F;中，即输入的内容可能为SQL注入语句，但是其中用&#x2F;&#x2F;内拼接&amp;，绕过WAF识别。  </p>
+<p>四、数据清理不当，即提交的参数值中存在大量干扰数据，如大量空格，TAB，换行，注释等，WAF对数据清洗不恰当，会导致真实的攻击数据被清洗。  </p>
+<p>五、通用性WAF无法了解后端的信息，如WEB容器，数据库版本，脚本语言类型，WAF无法对其各自的特性做处理，一些基于后端的特性攻击容易绕过通用性WAF。  </p>
+<p>六、妥协于性能和业务，例如为了优化SEO，会允许某些特定UA头的访问等，这些妥协于性能的设置也容易被攻击者利用。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">小工具</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">原理</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">WAF绕过</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/工具//" class="article-tag-list-link color3">工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/05/WAF/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2022/06/09/read/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          代码审计
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2022/05/31/muma/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">免杀木马</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -248,9 +359,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

@@ -155,6 +155,157 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-read" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/09/read/">代码审计</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/09/read/" class="archive-article-date">
+  	<time datetime="2022-06-09T02:46:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>代码审计，和考试做完检查是差不多的意思。相关人员通过人工审查或者借助自动化的工具，对程序源码进行检查和分析，发现源码中存在的缺陷和可能引发的安全漏洞。<br>之前在pikachu有一道关于敏感信息泄露的题目，大体是讲开发者将测试用例以注释的方式放在里html中，可以被直接查看，当然这种事情看看就好了，真有这样的泄露早就被交洞了。<br>所以代码审计很好理解，主要是就代码审计的常用思路进行学习：<br>——敏感关键字回溯参数传递<br>目前比较常用的漏洞检索方式，主要是通过搜索相对应的敏感关键字，定向、高效的挖掘漏洞。利用正则匹配一些高危函数，关键函数以及敏感关键字，然后就可以分析判断敏感函数的上下文，追踪参数源头。该方法主要对注入SQL注入漏洞等非逻辑上的漏洞，<br>——通读全文<br>人力成本过于巨大的方法，也是最麻烦的方法，主要是目的是根据整个应用的业务逻辑进行判断，是否存在可能的逻辑漏洞。  </p>
+<p>常见的根据输出位置的编码规则：<br>输出点在HTML标签之间： 对(&amp;, &lt;, &gt;, “, ‘,&#x2F;)等特殊字符进行实体编码；<br>输出点在HTML标签属性(src,style,href)内： 对数据进行HTML属性编码除了阿拉伯数字和字母，对其他所有的字符进行编码，只要该字符的ASCII码小于256。编码后输出的格式为&amp;#xHH;(以&amp;#x开头，HH则是指该字符对应的十六进制数字，分号作为结束符)；<br>输出点在JS内的数据中： 需要JS编码，对除阿拉伯数字和字母对ASCII&lt;256的的其他字符进行编码；<br>输出点在CSS数据中：需要进行CSS编码，原则同上。  </p>
+<p>常用的代码审计工具：Seay源码审计系统、RIPS等。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/09/read/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-WAF" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/05/WAF/">WAF</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/05/WAF/" class="archive-article-date">
+  	<time datetime="2022-06-04T16:02:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Web Application Firewall，web应用防火墙，主要功能是对来自web应用程序客户端的各类请求进行内容检测和验证，确保其安全性和合法性。<br>叫Application的原因很明显，应用层嘛，主要针对常见的XSS,SQL注入，CSRF以及爬虫进行相关的检测和防范。  </p>
+<p>原理:通过特征提取和分块检索进行特征匹配，将漏洞特征与设备自身的特征库进行匹配比对，一旦命中，直接阻断，这种方法能够有效防范已知的安全问题，但是需要一个强大的特征库支持，特征库需要保证定期更新及维护。<br>以下就绕过思路进行学习，主要学习材料来源于二向箔安全，以及总结于各类博客。<br>目前主流的WAF绕过主要的突破点在于：Web容器的特性，Web应用层的问题，WAF自身的问题以及数据库的部分特性。<br>——Web容器的特性<br>一、对使用IIS+ASP的环境，对URL请求中的%处理时，如果后面的字符构成的字符串在URL编码表之外，ASP脚本处理时会将其忽略。 熟悉注入的应该能意识到，这就意味着在waf层获取的参数不足以和特征库匹配，但是却会被忽略%后构成SQL注入。  </p>
+<p>二、IIS支持Unicoe编码字符解析，但是有些WAF却不具备。意味着例如在WAF层的%u0053elect的输入会在IIS的后端识别后会自动编码，最终识别输入内容为Select。  </p>
+<p>三、由于Http协议中允许同样名称参数出现多次，例如&#x2F;?id&#x3D;12345%id&#x3D;67890，部分WAF会对其分开检测或是单独检测一者，其识别逻辑为输入id&#x3D;12345和id&#x3D;67890。但是在IIS+ASP&#x2F;ASP.NET来说，它最终识别的结果为12345,67890。意味着构造的输入为id&#x3D;union select password&#x2F;&amp;&#x2F;id&#x3D;from users其最终在后端识别为union select password &#x2F;,&#x2F; frome users。  </p>
+<p>四、当web浏览器的兼容方式与WAF不一致时，部分web浏览器出于兼容的目的，会对非RFC2616标准的请求包做兼容处理。如缺乏http协议字段或者缺少host字段，并且不添加请求类型。部分WAF处理数据的时候要和按照GET,POST等方式获取数据，或者通过正则来处理数据库包，此时WAF不会对请求包中的攻击字段做处理但是在后端被执行。  </p>
+<p>——Web应用层的问题<br>一、多重编码问题，由于web应用程序和WAF的解码能力存在不一致，WAF因为解码层数少于Web应用导致防御机制被绕过。例如在WAF经过多次解码后最终结果为123%25,而Web应用程序还能继续解码，使得最终的结果为123&amp;。  </p>
+<p>二、多数据来源，或者说是多数据输入点设定，如ASP的Request对象对于请求包的解析不是特别严谨，Web程序可以分别从GET请求中，POST请求中以及Cookie中寻找存在的参数值，最终在结果拼接所有的输入值。而对于某些WAF中，仅仅检查GET或POST请求，对三种方式组合的参数输入往往会被绕过。  </p>
+<p>——WAF自身问题<br>一、白名单的设置，例如指定的IP或IP段，来源于搜索引擎爬虫之类的请求WAF不会进行处理，此方面可以进行请求头的特征伪造处理。  </p>
+<p>二、数据获取方式存在缺陷，例如Get请求不被通过但是POST能够成功通过，也可能是WAF仅对某一种content-type设定了检测规则，换一种即可。或者干脆是WAF本身从数据包中提取检测特征值的方式存在缺陷，攻击数据由于干扰字符而无法被提取，以往的WAF可直接使用%0a,%0b,%0c等直接绕过，现在当然不行。  </p>
+<p>三、数据处理不当，此指WAF对获取数据存储和处理不当，对%00解码后会将后面的的数据忽略，不进行检测(%00会被WAF理解为参数读取已经结束了)，实现WAF绕过。或者是&amp;字符，由于某些WAF在对HTTP请求数据包中的参数进行检测时，会对输入的被&amp;分割的数据分开处理，而总体的输入可能时&amp;被写在&#x2F;&#x2F;中，即输入的内容可能为SQL注入语句，但是其中用&#x2F;&#x2F;内拼接&amp;，绕过WAF识别。  </p>
+<p>四、数据清理不当，即提交的参数值中存在大量干扰数据，如大量空格，TAB，换行，注释等，WAF对数据清洗不恰当，会导致真实的攻击数据被清洗。  </p>
+<p>五、通用性WAF无法了解后端的信息，如WEB容器，数据库版本，脚本语言类型，WAF无法对其各自的特性做处理，一些基于后端的特性攻击容易绕过通用性WAF。  </p>
+<p>六、妥协于性能和业务，例如为了优化SEO，会允许某些特定UA头的访问等，这些妥协于性能的设置也容易被攻击者利用。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">WAF绕过</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/05/WAF/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-muma" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -251,7 +402,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>sql靶场就不再后端部分再做过多分析，虽然形式不同但是归根结底的思路与pikachu差不了太多，主要就解题思路开始着手。<br>环境怎么装也不写了，下个phpstudy就行。<br>———————————lesson 1———————————<br>打开题目，放眼望去没有输入点，估计是个url传参，看眼内容，让你输入id。试试?id&#x3D;1,有返回，开始做奇怪的拼接,id后面开始输入1’ 1” 1’” 1’) 1’#……<br>发现输入1’存在报错，可能存在注入点。开始并入and 1&#x3D;1| 1&#x3D;2 ;输入<a target="_blank" rel="noopener" href="http://localhost/Less-1/?id=1%20%27and%201=2%20#%EF%BC%8C%E5%8F%91%E7%8E%B0%E4%BB%8D%E6%97%A7%E6%98%AF%E6%8A%A5%E9%94%99%E6%8F%90%E7%A4%BA%E3%80%82%E6%89%93%E5%BC%80burpsuit%EF%BC%8C%E5%8F%91%E7%8E%B0%E4%BC%A0%E8%BE%93%E5%90%8E#%E6%B2%A1%E4%BA%86%EF%BC%8C%E5%9B%A0%E4%B8%BAurl%E4%B8%AD#%E4%BB%A3%E8%A1%A8html%E9%A1%B5%E9%9D%A2%E7%9A%84%E9%94%9A%E7%82%B9%EF%BC%8C%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%B8%A6%E5%88%B0%E5%90%8E%E7%AB%AF%E3%80%82">http://localhost/Less-1/?id=1%20%27and%201=2%20#，发现仍旧是报错提示。打开burpsuit，发现传输后#没了，因为url中#代表html页面的锚点，数据传输过程不会带到后端。</a><br>因此改为?id&#x3D;1%20%27and%201&#x3D;2%20– q（–后字母随意，主要防止–后的空格被忽略）</p>
+<p>此时页面报错，说明and1&#x3D;2被拼接入sql语句。猜测一下字段，选择并入order by方法，当order by 4之后报错。说明是三字段。<br>开始union select，?id&#x3D;100%20%27union%20select%2011,database(),33%20–%20q，返回database为security。  </p>
+<p>利用table_name() from information_sechema.tables where table_schema&#x3D;’security’,limit一下（也可以用group_concat把table_name拼在一起,但是考虑到返回长度可能有限制)，找出来一共email,referers,uagents,users  </p>
+<p>利用column_name查一下列名，where table_schema&#x3D;’security’ and table_name&#x3D;’users’<br>——————————————————————————</p>
+<p>———————————lesson 2———————————<br>一样的提示，开始尝试，发现无论在数字后面拼接什么它都报错，怀疑就是个整形，直接?id&#x3D;1 and 1&#x3D;2发现返回错误。剩下的和第一关流程一样，就不多说了。<br>——————————————————————————</p>
+<p>———————————lesson 3———————————<br>一样的提示，一样的尝试，发现在输入?id&#x3D;1’后报错点里有个)，直接用?id&#x3D;1’)拼接一个 and 1&#x3D;2，发现返回错误。余下的也差不多，再按照第一题的思路重复一遍即可。<br>——————————————————————————</p>
+<p>———————————lesson 4———————————<br>有点看腻了，发现1’之后正常执行，再输入1”发现报错内容为“）格式，输入?id&#x3D;1”)%20and%201&#x3D;2%20–%20qwe后，发现报错了。剩下的因为information_sechema没做限制，和之前相同。<br>——————————————————————————</p>
+<p>———————————lesson 5———————————<br>蓝色的图啊，开始试注入点，发现注入点和第一题一样，但是在输入id后发现没有显示位，所以可以不再union select了。盲注就不试了，不想做后台&#x3D;。&#x3D;<br>试试报错，用updatexml(1,concat(0x7e（~）,databse(),0x7e),1),报错原理再pikachu里提了。发现成功报错返回了security，同第一题的原理去获取表名、列名等。<br>——————————————————————————</p>
+<p>———————————lesson 6———————————<br>和lesson 5的框架其实一样，就是闭合的方式变化了，再省略好像都快没东西写了，换个时间盲注吧。写个时间注入，先去猜测数据库名的长度,构造一下and if(length(database())&#x3D;’’),sleep(3),1)，再构造一下and if(left(database(),number)&#x3D;’’))做爆破<br>——————————————————————————</p>
+<p>———————————lesson 7———————————<br>不一样了，发现它题目开始屏蔽报错信息了。意味着之后的题目大概是要猜闭合了。那先输个正常值, ?id&#x3D;1，试闭合以’))完成闭合，然后发现返回了个outfile,常用的file系列函数，可以尝试使用outfile函数写码，靶场的路径可以通过其他关卡进行获取，做union%20select%201,@@basedir,@@datadir<br>当然自己搭的嘛，打开目录看一眼也是可以的（doge）。然后对路径下进行一个木马写入<br>eval($_REQUEST(1))<br>采取into outfile方法写入，以php文件形式存储。之后通过一些工具可以直接拿下。<br>——————————————————————————</p>
+<p>———————————lesson 8———————————  </p>
+
       
 
       
@@ -260,6 +422,17 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/靶场//" class="article-tag-list-link color3">靶场</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -910,160 +1083,6 @@
 
 
   
-    <article id="post-MSF" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/24/MSF/">MSF</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/24/MSF/" class="archive-article-date">
-  	<time datetime="2022-05-24T07:52:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>——————————————正文————————————————<br>The Metasploit Framework，懂得都懂，拿来做相关测试都会用的东西。当然工具始终是工具，学习始终从原理的角度入手。不做script kiddie。<br>工具内容：  </p>
-<ul>
-<li>exploits:攻击模块，对应每一个具体漏洞的攻击方式。</li>
-<li>payload：在exploit成功后，真正在目标系统执行的代码或指令。</li>
-<li>auxiliary:信息收集、枚举、指纹探测、扫描等辅助功能。</li>
-<li>encoders:加密payload</li>
-<li>nops:维持payload稳定性</li>
-</ul>
-<p>很多相关的漏洞利用和检测都会用MSF来做，在这里先挂着。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">MSF</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">小工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/工具//" class="article-tag-list-link color3">工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/24/MSF/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-xshell" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p>title: xshellGhost<br>date: 2022-05-23 22:36:47<br>tags: [xshell,DGA,原理]<br>categories: 找洞人<br>——————————————正文————————————————<br>用V2Ray的时候用到了Xshell，然后看到了那个安全事件，触及了一个安全人的灵魂，于是去看了看后门事件。  </p>
-<ul>
-<li><p>形式上：网络通信组件nssock2.dll文件被植入了恶意代码，在正常文件的第326和703函数后各添加了额外的函数。厂商未发现并且给感染组件打上合法数字签名随新版软件包统一发布，用户启动后，加载恶意代码，将主机的信息通过DGA算法生成的域名向DNS服务器发送数据包，后门代码将敏感信息传送到远程服务器。  </p>
-</li>
-<li><p>实现上：<br>1.nssock2被加载后，解密shellcode1执行。<br>2.shellcode1解密shellcode2执行：<br>创建注册表，上报数据到每月对应的DGA域名中<br>发往知名的域名解析器当中上传用户信息给攻击者<br>将接收的数据写入到创建的注册表项当中<br>通过获取的key1和key2解密Shellcode3并执行<br>3.Shellcode3会创建日志文件并写入信息,启动系统进程Svchost.exe，修改其oep处的代码，并注入shellcode形式的Root模块执行。<br>4.Root模块的初始化过程中，会加载并初始化Plugins、Config、Install、Online和DNS等功能模块，然后调用函数Install-&gt;InstallByCfg以获取配置信息，监控注册表并创建全局互斥体，调用Online-&gt; InitNet；<br> 5.函数Online-&gt; InitNet会根据其配置初始化网络相关资源，向指定服务地址发送信息，并等待云端动态下发代码进行下一步攻击。</p>
-</li>
-<li><p>有关DGA：<br>攻击者利用DGA的随机字符生成域名，逃避域名黑名单检测的技术。nssock2.dll中的恶意代码会对域名发起请求，由于该域名向多个超长域名做渗出。通过DNS解析时，向攻击者的服务器传输敏感数据，达到盗取用户xshell数据的目的。</p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/23/xshell/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1210,6 +1229,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Burpsuite</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">WAF绕过</a>
               </li>
             
             <div class="clearfix"></div>

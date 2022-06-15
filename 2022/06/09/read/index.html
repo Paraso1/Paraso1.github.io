@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: 技术 | Parasol的笔记</title>
+  <title>代码审计 | Parasol的笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="小笔记，每月产出，努力提升，磨练技术，守法公民">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Parasol的笔记">
-<meta property="og:url" content="http://example.com/tags/%E6%8A%80%E6%9C%AF/index.html">
+  <meta name="description" content="代码审计，和考试做完检查是差不多的意思。相关人员通过人工审查或者借助自动化的工具，对程序源码进行检查和分析，发现源码中存在的缺陷和可能引发的安全漏洞。之前在pikachu有一道关于敏感信息泄露的题目，大体是讲开发者将测试用例以注释的方式放在里html中，可以被直接查看，当然这种事情看看就好了，真有这样的泄露早就被交洞了。所以代码审计很好理解，主要是就代码审计的常用思路进行学习：——敏感关键字回溯参">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码审计">
+<meta property="og:url" content="http://example.com/2022/06/09/read/index.html">
 <meta property="og:site_name" content="Parasol的笔记">
-<meta property="og:description" content="小笔记，每月产出，努力提升，磨练技术，守法公民">
+<meta property="og:description" content="代码审计，和考试做完检查是差不多的意思。相关人员通过人工审查或者借助自动化的工具，对程序源码进行检查和分析，发现源码中存在的缺陷和可能引发的安全漏洞。之前在pikachu有一道关于敏感信息泄露的题目，大体是讲开发者将测试用例以注释的方式放在里html中，可以被直接查看，当然这种事情看看就好了，真有这样的泄露早就被交洞了。所以代码审计很好理解，主要是就代码审计的常用思路进行学习：——敏感关键字回溯参">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-06-09T02:46:18.000Z">
+<meta property="article:modified_time" content="2022-06-14T06:23:18.177Z">
 <meta property="article:author" content="Parasol">
 <meta property="article:tag" content="前端，js，渗透测试，工具介绍，无线安全，web安全，挖洞人，找洞人">
 <meta name="twitter:card" content="summary">
@@ -153,79 +155,158 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-read" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/a/" class="archive-article-date">
-  	<time datetime="2022-05-23T11:57:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/a/">V2ray，ss和ssr</a>
+    <h1 class="article-title" itemprop="name">
+      代码审计
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">小工具</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">原理</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        <a href="/2022/06/09/read/" class="archive-article-date">
+  	<time datetime="2022-06-09T02:46:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>代码审计，和考试做完检查是差不多的意思。相关人员通过人工审查或者借助自动化的工具，对程序源码进行检查和分析，发现源码中存在的缺陷和可能引发的安全漏洞。<br>之前在pikachu有一道关于敏感信息泄露的题目，大体是讲开发者将测试用例以注释的方式放在里html中，可以被直接查看，当然这种事情看看就好了，真有这样的泄露早就被交洞了。<br>所以代码审计很好理解，主要是就代码审计的常用思路进行学习：<br>——敏感关键字回溯参数传递<br>目前比较常用的漏洞检索方式，主要是通过搜索相对应的敏感关键字，定向、高效的挖掘漏洞。利用正则匹配一些高危函数，关键函数以及敏感关键字，然后就可以分析判断敏感函数的上下文，追踪参数源头。该方法主要对注入SQL注入漏洞等非逻辑上的漏洞，<br>——通读全文<br>人力成本过于巨大的方法，也是最麻烦的方法，主要是目的是根据整个应用的业务逻辑进行判断，是否存在可能的逻辑漏洞。  </p>
+<p>常见的根据输出位置的编码规则：<br>输出点在HTML标签之间： 对(&amp;, &lt;, &gt;, “, ‘,&#x2F;)等特殊字符进行实体编码；<br>输出点在HTML标签属性(src,style,href)内： 对数据进行HTML属性编码除了阿拉伯数字和字母，对其他所有的字符进行编码，只要该字符的ASCII码小于256。编码后输出的格式为&amp;#xHH;(以&amp;#x开头，HH则是指该字符对应的十六进制数字，分号作为结束符)；<br>输出点在JS内的数据中： 需要JS编码，对除阿拉伯数字和字母对ASCII&lt;256的的其他字符进行编码；<br>输出点在CSS数据中：需要进行CSS编码，原则同上。  </p>
+<p>常用的代码审计工具：Seay源码审计系统、RIPS等。</p>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/工具//" class="article-tag-list-link color3">工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
-
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/09/read/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2022/06/05/WAF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">WAF</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -248,9 +329,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

@@ -155,6 +155,160 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MSF" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/24/MSF/">MSF</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/24/MSF/" class="archive-article-date">
+  	<time datetime="2022-05-24T07:52:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>——————————————正文————————————————<br>The Metasploit Framework，懂得都懂，拿来做相关测试都会用的东西。当然工具始终是工具，学习始终从原理的角度入手。不做script kiddie。<br>工具内容：  </p>
+<ul>
+<li>exploits:攻击模块，对应每一个具体漏洞的攻击方式。</li>
+<li>payload：在exploit成功后，真正在目标系统执行的代码或指令。</li>
+<li>auxiliary:信息收集、枚举、指纹探测、扫描等辅助功能。</li>
+<li>encoders:加密payload</li>
+<li>nops:维持payload稳定性</li>
+</ul>
+<p>很多相关的漏洞利用和检测都会用MSF来做，在这里先挂着。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">MSF</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">小工具</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/工具//" class="article-tag-list-link color3">工具</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/24/MSF/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-xshell" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: xshellGhost<br>date: 2022-05-23 22:36:47<br>tags: [xshell,DGA,原理]<br>categories: 找洞人<br>——————————————正文————————————————<br>用V2Ray的时候用到了Xshell，然后看到了那个安全事件，触及了一个安全人的灵魂，于是去看了看后门事件。  </p>
+<ul>
+<li><p>形式上：网络通信组件nssock2.dll文件被植入了恶意代码，在正常文件的第326和703函数后各添加了额外的函数。厂商未发现并且给感染组件打上合法数字签名随新版软件包统一发布，用户启动后，加载恶意代码，将主机的信息通过DGA算法生成的域名向DNS服务器发送数据包，后门代码将敏感信息传送到远程服务器。  </p>
+</li>
+<li><p>实现上：<br>1.nssock2被加载后，解密shellcode1执行。<br>2.shellcode1解密shellcode2执行：<br>创建注册表，上报数据到每月对应的DGA域名中<br>发往知名的域名解析器当中上传用户信息给攻击者<br>将接收的数据写入到创建的注册表项当中<br>通过获取的key1和key2解密Shellcode3并执行<br>3.Shellcode3会创建日志文件并写入信息,启动系统进程Svchost.exe，修改其oep处的代码，并注入shellcode形式的Root模块执行。<br>4.Root模块的初始化过程中，会加载并初始化Plugins、Config、Install、Online和DNS等功能模块，然后调用函数Install-&gt;InstallByCfg以获取配置信息，监控注册表并创建全局互斥体，调用Online-&gt; InitNet；<br> 5.函数Online-&gt; InitNet会根据其配置初始化网络相关资源，向指定服务地址发送信息，并等待云端动态下发代码进行下一步攻击。</p>
+</li>
+<li><p>有关DGA：<br>攻击者利用DGA的随机字符生成域名，逃避域名黑名单检测的技术。nssock2.dll中的恶意代码会对域名发起请求，由于该域名向多个超长域名做渗出。通过DNS解析时，向攻击者的服务器传输敏感数据，达到盗取用户xshell数据的目的。</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/23/xshell/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-a" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -509,6 +663,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Burpsuite</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">WAF绕过</a>
               </li>
             
             <div class="clearfix"></div>
